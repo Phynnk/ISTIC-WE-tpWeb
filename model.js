@@ -8,7 +8,6 @@ function Drawing() {
 function Shape(color, lineWidth) {
     this.color = color;
     this.lineWidth = lineWidth;
-    this.index = -1;
 }
 
 function Rectangle(x, y, width, height, lineWidth, color) {

@@ -1,4 +1,3 @@
-
 var editingMode = { rect: 0, line: 1 };
 
 function Pencil(ctx, drawing, canvas) {
@@ -20,6 +19,15 @@ function Pencil(ctx, drawing, canvas) {
 	$('#colour').change(function() {
 	  this.currColour = $('#colour').val();
 	}.bind(this));
+	$('#shapeList').click(function(e) {
+    var button = e.target.closest("button");
+    if (button) {
+        var index = parseInt(button.id);
+        removeShape(drawing, index);
+        drawing.paint(ctx, canvas);
+        updateShapeList(drawing);
+    }
+}.bind(this));
 
 	new DnD(canvas, this);
 

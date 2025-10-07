@@ -23,37 +23,21 @@ Drawing.prototype.paint = function(ctx, canvas) {
     });
 }
 
-Rectangle.prototype.setIndex = function(index) {
-    this.index = index;
-}
-
-Line.prototype.setIndex = function(index) {
-    this.index = index;
-}
-
 function updateShapeList(drawing) {
     var shapeList = document.getElementById("shapeList");
     shapeList.innerHTML = "";
     drawing.listShapes.forEach(function(shape, index) {
         var listItem = document.createElement("li");
-        shape.setIndex(index);
         var button = "<button type='button' class='btn btn-default' id='" + index + "'> <span class='glyphicon glyphicon-remove-sign'></span> </button>";
         if (shape instanceof Rectangle) {
-            listItem.innerHTML = button + "Rectangle: (id: " + shape.index + ", x: " + shape.x + ", y: " + shape.y + ", lineWidth: " + shape.lineWidth + ", color: " + shape.color + ")";
+            listItem.innerHTML = button + "Rectangle: (x: " + shape.x + ", y: " + shape.y + ", lineWidth: " + shape.lineWidth + ", color: " + shape.color + ")";
         } else if (shape instanceof Line) {
-            listItem.innerHTML = button + "Line: (id: " + shape.index + ", x: " + shape.x1 + ", y: " + shape.y1 + ", lineWidth: " + shape.lineWidth + ", color: " + shape.color + ")";
+            listItem.innerHTML = button + "Line: (x: " + shape.x1 + ", y: " + shape.y1 + ", lineWidth: " + shape.lineWidth + ", color: " + shape.color + ")";
         }
         shapeList.appendChild(listItem);
     });
 }
 
-document.getElementById("shapeList").addEventListener("click", function(event) {
-    console.log(event.target);
-    if (event.target && event.target.nodeName === "BUTTON") {
-        console.log("Delete shape with id: " + event.target.id);
-        var index = parseInt(event.target.id);
-        drawing.listShapes.splice(index, 1);
-        updateShapeList(drawing);
-        drawing.paint(ctx, canvas);
-    }
-});
+function removeShape(drawing, index) {
+    drawing.listShapes.splice(index, 1);
+}
