@@ -13,6 +13,21 @@ Line.prototype.paint = function(ctx) {
     ctx.stroke();
 }
 
+Elipse.prototype.paint = function(ctx) {
+    ctx.beginPath();
+    ctx.ellipse(this.x, this.y, this.radiusX, this.radiusY, 0, 0, 2 * Math.PI);
+    ctx.stroke();
+}
+
+Triangle.prototype.paint = function(ctx) {
+    ctx.beginPath();
+    ctx.moveTo(this.x1, this.y1);
+    ctx.lineTo(this.x2, this.y2);
+    ctx.lineTo(this.x3, this.y3);
+    ctx.closePath();
+    ctx.stroke();
+}
+
 Drawing.prototype.paint = function(ctx, canvas) {
     ctx.fillStyle = '#F0F0F0';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -33,6 +48,10 @@ function updateShapeList(drawing) {
             listItem.innerHTML = button + "Rectangle: (x: " + shape.x + ", y: " + shape.y + ", lineWidth: " + shape.lineWidth + ", color: " + shape.color + ")";
         } else if (shape instanceof Line) {
             listItem.innerHTML = button + "Line: (x: " + shape.x1 + ", y: " + shape.y1 + ", lineWidth: " + shape.lineWidth + ", color: " + shape.color + ")";
+        } else if (shape instanceof Elipse) {
+            listItem.innerHTML = button + "Elipse: (x: " + shape.x + ", y: " + shape.y + ", lineWidth: " + shape.lineWidth + ", color: " + shape.color + ")";
+        } else if (shape instanceof Triangle) {
+            listItem.innerHTML = button + "Triangle: (x1: " + shape.x1 + ", y1: " + shape.y1 + ", lineWidth: " + shape.lineWidth + ", color: " + shape.color + ")";
         }
         shapeList.appendChild(listItem);
     });
