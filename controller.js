@@ -29,31 +29,43 @@ function Pencil(ctx, drawing, canvas) {
 	  this.currColour = $('#colour').val();
 	}.bind(this));
 	$('#shapeList').click(function(e) {
-    var button = e.target.closest("button");
-    if (button) {
-        var index = parseInt(button.id);
-        removeShape(drawing, index);
-        drawing.paint(ctx, canvas);
-        updateShapeList(drawing);
-    }
+		var button = e.target.closest("button");
+		if (button) {
+			drawing.saveState();
+			var index = parseInt(button.id);
+			removeShape(drawing, index);
+			drawing.paint(ctx, canvas);
+			updateShapeList(drawing);
+		}
+	}.bind(this));
+	$('#butUndo').click(function() {
+		drawing.undo();
+		drawing.paint(ctx, canvas);
+		updateShapeList(drawing);
+	}.bind(this));
+	$('#butRedo').click(function() {
+		drawing.redo();
+		drawing.paint(ctx, canvas);
+		updateShapeList(drawing);
 	}.bind(this));
 
 	new DnD(canvas, this);
 
 	// Implémentez ici les 3 fonctions onInteractionStart, onInteractionUpdate et onInteractionEnd
 	this.onInteractionStart = function(dnd) {
-	if (this.currEditingMode === editingMode.rect) {
-	  this.currentShape = new Rectangle(dnd.coordXStart, dnd.coordYStart, 0, 0, this.currLineWidth, this.currColour);
-	} else if (this.currEditingMode === editingMode.line) {
-	  this.currentShape = new Line(dnd.coordXStart, dnd.coordYStart, dnd.coordXStart, dnd.coordYStart, this.currLineWidth, this.currColour);
-	} else if (this.currEditingMode === editingMode.triangle) {
-	  this.currentShape = new Triangle(dnd.coordXStart, dnd.coordYStart, dnd.coordXStart, dnd.coordYStart, dnd.coordXStart, dnd.coordYStart, this.currLineWidth, this.currColour);
-	} else if (this.currEditingMode === editingMode.elipse) {
-		this.currentShape = new Elipse(dnd.coordXStart, dnd.coordYStart, 0, 0, this.currLineWidth, this.currColour);
-	}
-	drawing.listShapes.push(this.currentShape);
-	drawing.paint(ctx, canvas);
-	updateShapeList(drawing);
+		if (this.currEditingMode === editingMode.rect) {
+				this.currentShape = new Rectangle(dnd.coordXStart, dnd.coordYStart, 0, 0, this.currLineWidth, this.currColour);
+		} else if (this.currEditingMode === editingMode.line) {
+				this.currentShape = new Line(dnd.coordXStart, dnd.coordYStart, dnd.coordXStart, dnd.coordYStart, this.currLineWidth, this.currColour);
+		} else if (this.currEditingMode === editingMode.triangle) {
+				this.currentShape = new Triangle(dnd.coordXStart, dnd.coordYStart, dnd.coordXStart, dnd.coordYStart, dnd.coordXStart, dnd.coordYStart, this.currLineWidth, this.currColour);
+		} else if (this.currEditingMode === editingMode.elipse) {
+				this.currentShape = new Elipse(dnd.coordXStart, dnd.coordYStart, 0, 0, this.currLineWidth, this.currColour);
+		}
+		drawing.saveState();
+		drawing.listShapes.push(this.currentShape);
+		drawing.paint(ctx, canvas);
+		updateShapeList(drawing);
 	};
 
 	this.onInteractionUpdate = function(dnd) {

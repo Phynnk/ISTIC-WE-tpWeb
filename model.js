@@ -3,7 +3,28 @@
 // N'oubliez pas l'héritage !
 function Drawing() {
     this.listShapes = new Array();
+    this.undoStack = [];
+    this.redoStack = [];
 }
+
+Drawing.prototype.saveState = function() {
+    this.undoStack.push(this.listShapes.slice());
+    this.redoStack = [];
+};
+
+Drawing.prototype.undo = function() {
+    if (this.undoStack.length > 0) {
+        this.redoStack.push(this.listShapes.slice());
+        this.listShapes = this.undoStack.pop();
+    }
+};
+
+Drawing.prototype.redo = function() {
+    if (this.redoStack.length > 0) {
+        this.undoStack.push(this.listShapes.slice());
+        this.listShapes = this.redoStack.pop();
+    }
+};
 
 function Shape(color, lineWidth) {
     this.color = color;
